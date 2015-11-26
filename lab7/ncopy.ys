@@ -1,0 +1,185 @@
+#/* $begin ncopy-ys */
+##################################################################
+# ncopy a src block of len ints to dst.
+# Return the number of positive ints (>0) contained in src.
+#
+# Include your name and ID here.
+# Name:Hu Jintao   ID:5130379046
+# Describe how and why you modified the baseline code.
+# 1.use 12 unrolling and jump table
+# 2.add two instructs iaddl and leave
+##################################################################
+# Do not modify this portion
+# Function prologue.
+ncopy:	pushl %ebp		# Save old frame pointer
+	rrmovl %esp,%ebp	# Set up new frame pointer
+	pushl %esi		# Save callee-save regs
+	pushl %ebx
+	pushl %edi
+	mrmovl 8(%ebp),%ebx	# src
+	mrmovl 16(%ebp),%edx	# len
+	mrmovl 12(%ebp),%ecx	# dst
+
+##################################################################
+# You can modify this portion
+	# Loop header
+	
+	rrmovl %edx, %edi
+	irmovl $0x3c, %esi
+	addl %edi, %edi
+	addl %edi, %edi
+	andl %esi, %edi
+
+	iaddl $-64, %ebx
+	iaddl $-64, %ecx
+	addl %edi, %ebx
+	addl %edi, %ecx
+	
+	mrmovl Jump(%edi), %esi
+	
+	xorl %eax,%eax		# count = 0;
+	andl %edx,%edx		# len <= 0?
+	jle Done		# if so, goto Done:
+
+	pushl %esi
+	ret
+
+#jump table
+Jump:
+	.long Loop
+	.long Loop0
+	.long Loop1
+        .long Loop2
+        .long Loop3
+        .long Loop4
+        .long Loop5
+        .long Loop6
+        .long Loop7
+        .long Loop8
+        .long Loop9
+        .long Loop10
+        .long Loop11
+        .long Loop12
+        .long Loop13
+        .long Loop14
+        .long Loop15
+	
+Loop:	
+	iaddl $64, %ebx
+	iaddl $64, %ecx
+	jmp Loop15
+
+Loop15:	mrmovl (%ebx), %esi	# read val from src...
+	rmmovl %esi, (%ecx)	# ...and store it to dst
+	andl %esi, %esi		# val <= 0?
+	jle Loop14		# if so, goto Npos:
+	iaddl $1, %eax		# count++
+
+Loop14:  mrmovl 4(%ebx), %esi     # read val from src...
+        rmmovl %esi, 4(%ecx)     # ...and store it to dst
+        andl %esi, %esi         # val <= 0?
+        jle Loop13               # if so, goto Npos:
+        iaddl $1, %eax          # count++
+
+Loop13:  mrmovl 8(%ebx), %esi     # read val from src...
+        rmmovl %esi, 8(%ecx)     # ...and store it to dst
+        andl %esi, %esi         # val <= 0?
+        jle Loop12               # if so, goto Npos:
+        iaddl $1, %eax          # count++
+
+Loop12:  mrmovl 12(%ebx), %esi     # read val from src...
+        rmmovl %esi, 12(%ecx)     # ...and store it to dst
+        andl %esi, %esi         # val <= 0?
+        jle Loop11               # if so, goto Npos:
+        iaddl $1, %eax          # count++
+
+Loop11:  mrmovl 16(%ebx), %esi     # read val from src...
+        rmmovl %esi, 16(%ecx)     # ...and store it to dst
+        andl %esi, %esi         # val <= 0?
+        jle Loop10               # if so, goto Npos:
+        iaddl $1, %eax          # count++
+
+Loop10:  mrmovl 20(%ebx), %esi     # read val from src...
+        rmmovl %esi, 20(%ecx)     # ...and store it to dst
+        andl %esi, %esi         # val <= 0?
+        jle Loop9               # if so, goto Npos:
+        iaddl $1, %eax          # count++
+
+Loop9:  mrmovl 24(%ebx), %esi     # read val from src...
+        rmmovl %esi, 24(%ecx)     # ...and store it to dst
+        andl %esi, %esi         # val <= 0?
+        jle Loop8               # if so, goto Npos:
+        iaddl $1, %eax          # count++
+
+Loop8:  mrmovl 28(%ebx), %esi     # read val from src...
+        rmmovl %esi, 28(%ecx)     # ...and store it to dst
+        andl %esi, %esi         # val <= 0?
+        jle Loop7              # if so, goto Npos:
+        iaddl $1, %eax          # count++
+
+Loop7:  mrmovl 32(%ebx), %esi     # read val from src...
+        rmmovl %esi, 32(%ecx)     # ...and store it to dst
+        andl %esi, %esi         # val <= 0?
+        jle Loop6              # if so, goto Npos:
+        iaddl $1, %eax          # count++
+
+Loop6: mrmovl 36(%ebx), %esi     # read val from src...
+        rmmovl %esi, 36(%ecx)     # ...and store it to dst
+        andl %esi, %esi         # val <= 0?
+        jle Loop5              # if so, goto Npos:
+        iaddl $1, %eax          # count++
+
+Loop5: mrmovl 40(%ebx), %esi     # read val from src...
+        rmmovl %esi, 40(%ecx)     # ...and store it to dst
+        andl %esi, %esi         # val <= 0?
+        jle Loop4              # if so, goto Npos:
+        iaddl $1, %eax          # count++
+
+Loop4: mrmovl 44(%ebx), %esi     # read val from src...
+        rmmovl %esi, 44(%ecx)     # ...and store it to dst
+        andl %esi, %esi         # val <= 0?
+        jle Loop3              # if so, goto Npos:
+        iaddl $1, %eax          # count++
+
+Loop3: mrmovl 48(%ebx), %esi     # read val from src...
+        rmmovl %esi, 48(%ecx)     # ...and store it to dst
+        andl %esi, %esi         # val <= 0?
+        jle Loop2              # if so, goto Npos:
+        iaddl $1, %eax          # count++
+
+Loop2: mrmovl 52(%ebx), %esi     # read val from src...
+        rmmovl %esi, 52(%ecx)     # ...and store it to dst
+        andl %esi, %esi         # val <= 0?
+        jle Loop1               # if so, goto Npos:
+        iaddl $1, %eax          # count++
+
+Loop1:  mrmovl 56(%ebx), %esi     # read val from src...
+        rmmovl %esi, 56(%ecx)     # ...and store it to dst
+        andl %esi, %esi         # val <= 0?
+        jle Loop0               # if so, goto Npos:
+        iaddl $1, %eax          # count++
+
+Loop0:  mrmovl 60(%ebx), %esi     # read val from src...
+        rmmovl %esi, 60(%ecx)     # ...and store it to dst
+        andl %esi, %esi         # val <= 0?
+        jle Npos               # if so, goto Npos:
+        iaddl $1, %eax          # count++
+
+Npos:	iaddl $64, %ebx
+	iaddl $64, %ecx		# dst++
+	iaddl $-16, %edx
+	jg Loop15			# if so, goto Loop:
+##################################################################
+# Do not modify the following section of code
+# Function epilogue.
+Done:
+	popl %edi               # Restore callee-save registers
+	popl %ebx
+	popl %esi
+	rrmovl %ebp, %esp
+	popl %ebp
+	ret
+##################################################################
+# Keep the following label at the end of your function
+End:
+#/* $end ncopy-ys */

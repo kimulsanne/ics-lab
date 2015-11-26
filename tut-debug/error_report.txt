@@ -1,0 +1,102 @@
+/*
+ * BUG#0
+ * description: 
+     miss semicolon
+ * location: 
+ *   int a = 10  (line 18)
+ * evidence: 
+ *   test.c:19: error: two or more data types in declaration specifiers
+ */
+
+BUG#1
+description:
+add "#include <stdio.h>"
+location:
+42
+evidence:
+"sprintf" and "printf" have been used.
+
+
+BUG#2
+description:
+add ";" in the end
+location:
+53
+evidence:
+
+
+
+BUG#3
+description:
+add ";" in the end
+location:
+59
+evidence:
+
+
+
+BUG#4
+description:
+change "record" into "record_t"
+location:
+115
+evidence:
+
+
+
+BUG#5
+description:
+change "i++" into "j++"
+location:
+126
+evidence:
+loop variable is j
+
+
+BUG#6
+description:
+add "{"
+location:
+190
+evidence:
+
+
+
+
+BUG#7
+description:
+change"key_len+pad_len" into "key_len+recno_len+pad_len"
+location:
+50
+evidence:
+the sum should be 100
+
+
+
+BUG#8
+description:
+change "buf_nrec" into "buf_size"
+location:
+182
+evidence:
+
+
+
+
+BUG#9
+description:
+change "r" into "w"
+location:
+188
+evidence:
+
+
+
+
+BUG#10
+description:
+change "<=" into "<"
+location:
+148
+evidence:
+
